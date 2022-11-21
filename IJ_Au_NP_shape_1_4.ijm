@@ -1,5 +1,4 @@
 macro "size distribution of Au particles in TEM images, scale via filename" {
-	run("Set Measurements...");
 	getDateAndTime(year, month, week, day, hour, min, sec, msec);
 	while (nImages>0) {
 		selectImage(nImages);
@@ -105,12 +104,14 @@ macro "size distribution of Au particles in TEM images, scale via filename" {
 				N++;
 			}	
 	}
-	run("Distribution...", "parameter=Feret automatic");
-	selectWindow("Feret Distribution");
-	saveAs("jpg", ""+dir2+"size_distribution_plot_"+day+"-"+month+"-"+year+"_"+hour+"h"+min+"min.jpg");
-	run("Distribution...", "parameter=Circ. automatic");
-	selectWindow("Circ. Distribution");
-	saveAs("jpg", ""+dir2+"circularity_distribution_plot_"+day+"-"+month+"-"+year+"_"+hour+"h"+min+"min.jpg");
+	if(iSM==false){
+		run("Distribution...", "parameter=Feret automatic");
+		selectWindow("Feret Distribution");
+		saveAs("jpg", ""+dir2+"size_distribution_plot_"+day+"-"+month+"-"+year+"_"+hour+"h"+min+"min.jpg");
+		run("Distribution...", "parameter=Circ. automatic");
+		selectWindow("Circ. Distribution");
+		saveAs("jpg", ""+dir2+"circularity_distribution_plot_"+day+"-"+month+"-"+year+"_"+hour+"h"+min+"min.jpg");
+	}
 	selectWindow("Results");
 	saveAs("txt", ""+dir2+"measurements_"+day+"-"+month+"-"+year+"_"+hour+"h"+min+"min.xls");
 	selectWindow("Log");
