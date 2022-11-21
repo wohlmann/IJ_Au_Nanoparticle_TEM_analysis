@@ -1,4 +1,4 @@
-macro "size distribution of Au particles in TEM images, scale via filename" {
+macro "size distribution of Au particles in TEM images, scale via filename, calibration values for JEM1400P" {
 	getDateAndTime(year, month, week, day, hour, min, sec, msec);
 	while (nImages>0) {
 		selectImage(nImages);
@@ -10,6 +10,7 @@ macro "size distribution of Au particles in TEM images, scale via filename" {
 	run("Close All");
 	print("\\Clear");
 	print("Start process at: "+day+"/"+month+"/"+year+" :: "+hour+":"+min+":"+sec+"");
+//get data
 	dir1=getDirectory("Please choose source directory");
 	list=getFileList(dir1);
 	dir2=getDirectory("Please choose destination directory ");
@@ -67,7 +68,8 @@ macro "size distribution of Au particles in TEM images, scale via filename" {
 			} else {
 				pxnm = px_nm [magindex];
 				print ("detcted MAG: "+MAGS [magindex]+"");
-				print("scale: "+pxnm+" px/nm");	
+				print("scale: "+pxnm+" px/nm");
+//detection	
 				selectWindow(""+title+"");
 				run("Enhance Contrast...", "saturated=0.35 normalize equalize");
 				run("Duplicate...", " ");
@@ -83,6 +85,7 @@ macro "size distribution of Au particles in TEM images, scale via filename" {
 				sumROI=sumROI+nROI;
 				print("detected "+nROI+" particles");
 				print("Sum of particles in analysis is now: "+sumROI+"");
+//measurement
 				roiManager("Measure");
 				if(QC==true){
 					selectWindow(""+title+"");
