@@ -1,4 +1,5 @@
 macro "size distribution of Au particles in TEM images, scale via filename" {
+	run("Set Measurements...");
 	getDateAndTime(year, month, week, day, hour, min, sec, msec);
 	while (nImages>0) {
 		selectImage(nImages);
@@ -17,9 +18,11 @@ macro "size distribution of Au particles in TEM images, scale via filename" {
 	Dialog.addMessage("analysing "+list.length+" images");
 	Dialog.addCheckbox("use batch mode ", true);
 	Dialog.addCheckbox("save QC images ", true);
+	Dialog.addCheckbox("set individual measurement parameters", false);
 	Dialog.show();
 	batch = Dialog.getCheckbox();
 	QC = Dialog.getCheckbox();
+	iSM = Dialog.getCheckbox();
 	setBatchMode(batch);
 	if (batch == 1){
 		print("batch mode on");
@@ -36,7 +39,12 @@ macro "size distribution of Au particles in TEM images, scale via filename" {
 //MAG-Steps and px/nm
 	MAGS = newArray("X200", "X250", "X300", "X400", "X500", "X600", "X800", "X1000", "X1200", "X1500", "X2000", "X2500", "X3000", "X4000", "X5000", "X6000", "X8000", "X10k", "X12k", "X15k", "X20k", "X25k", "X30k", "X40k", "X50k", "X60k", "X80k", "X100k", "X120k", "X150k", "X200k", "X250k", "X300k", "X500k", "X600k", "X800k", "X1M", "X1.2M");
 	px_nm = newArray(0.012460787, 0.015575979, 0.018691169, 0.024921575, 0.031152007, 0.037382408, 0.049843149, 0.062304014, 0.074764537, 0.093456021, 0.124607252, 0.15575955, 0.186912042, 0.249214503, 0.311523955, 0.373817094, 0.498429006, 0.623028489, 0.72630814, 0.894557823, 1.192743764, 1.490974191, 1.789115646, 2.34987068, 2.937683715, 3.525220459, 4.70084666, 5.875367431, 7.047954866, 8.813051146, 11.74383079, 14.69705882, 17.62610229, 29.39411765, 35.19014085, 46.92018779, 58.78823529, 70.38028169);
-	run("Set Measurements...", "shape perimeter feret's redirect=None decimal=3");
+	if (iSM==true){
+		run("Set Measurements...", "shape perimeter feret's redirect=None decimal=3");
+		run("Set Measurements...");
+	}else {
+		run("Set Measurements...", "shape perimeter feret's redirect=None decimal=3");
+	}
 	for (i=0; i<list.length; i++) {
 		path = dir1+list[i];
 		open(path);
